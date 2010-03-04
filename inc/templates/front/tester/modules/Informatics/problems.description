@@ -1,0 +1,104 @@
+<?php
+  global $redirect;
+  $data = targ ('data');
+  $s = $data['settings'];
+  $editbtn = targ ('editbtn');
+  formo ('title='.prepare_arg ($data['name']).';');
+  $lib = targ ('lib');
+?>
+
+<table width="100%"><tr><td>
+  <table class="right" style="margin: 0  0 6px 6px;" >
+    <tr>
+      <td style="padding: 0 0 6px 6px;">
+        <?php lblocko ('color=blue;'); ?>
+          <table width="100%" class="small">
+            <tr><td>Максимум баллов</td><td align="center">:</td><td><?=WT_CalculateMaxPoints ($s['tests'], $s['bonus']);?></td></tr>
+            <tr><td>Имя входного файла</td><td width="10" align="center">:</td><td><?=$s['input'];?></td></tr>
+            <tr><td>Имя выходного файла</td><td align="center">:</td><td><?=$s['output'];?></td></tr>
+            <tr><td>Ограничение по времени</td><td align="center">:</td><td><?=$s['timelimit'];?>&nbsp;сек</td></tr>
+            <tr><td>Ограничение по памяти</td><td align="center">:</td><td><?=$s['memorylimit'];?>&nbsp;Мб</td></tr>
+          </table>
+        <?php lblockc (); ?>
+<?php
+  if ($editbtn) {
+?>
+        <div class="problem_tags">
+        <?php lblocko ('color=green;title=Метки'); ?>
+          <div class="cnt">
+            <div class="tags" id="problem_tags">
+<?php
+  $tags = $data['tags'];
+  $n = count ($tags);
+  $tags_assoc = array ();
+
+  for ($i = 0; $i < $n; ++$i) {
+    $tags_assoc[$tags[$i]] = true;
+?>
+               <div><span><?=htmlspecialchars ($tags[$i]);?></span><img src="<?=config_get ('document-root');?>/pics/minus_s.gif" onclick="remove_tag(this, <?=$data['id']?>)"></div>
+<?php
+  }
+?>
+            </div>
+            <div class="actpub">
+              <div class="inpform" id="tag_inp_form">
+                <center>
+<?php
+  $all_tags = $lib->problemsContainer->GetAllTags ();
+  $aval_tags = array ();
+
+  for ($i = 0, $n = count ($all_tags); $i < $n; ++$i) {
+    if (!$tags_assoc[$all_tags[$i]]) {
+      $aval_tags[] = $all_tags[$i];
+    }
+  }
+
+  if (count ($aval_tags)) {
+    $cloud = new CVCTagCloud ();
+    $cloud->Init ('ProblemTags', $aval_tags,'title=Доступные метки;jshandler=on_tagcloud_selected;userdata=' . $data['id']);
+    $cloud->Draw ();
+  }
+?>
+                  <table class="clear">
+                    <tr>
+                      <td><input type="text" class="txt" value="" id="tag_name" onkeypress="on_tagname_keypress(event, <?=$data['id']?>)"></td>
+                      <td>&nbsp;&nbsp;<a href="#" class="small" onclick="do_add_tag(<?=$data['id']?>)">доб</a></td>
+                    </tr>
+                  </table>
+                </center>
+              </div>
+              <a href="#" onclick="on_tag_add_click(this);">Добавить метки</a>
+            </div>
+          </div>
+        <?php lblockc (); ?>
+        </div>
+<?php
+  }
+?>
+
+      </td>
+    </tr>
+  </table>
+
+<?php
+  print ($data['description']);
+?>
+</td></tr></table>
+<?php
+  $backlink = targ ('backlink');
+
+  if ($backlink == '') {
+    $backlink = $redirect;
+  }
+
+  if ($backlink != '' || $editbtn) {
+?>
+  <div class="formPast">
+    <?php if ($backlink!='') { ?><button class="submitBtn<?=((!$editbtn)?(' block'):(''));?>" onclick="nav ('<?=$backlink;?>');">Назад</button><?php } ?>
+    <?php if ($editbtn)      { ?><button class="submitBtn<?=(($backlink=='')?(' block'):(''));?>" onclick="nav ('?page=prbmanager&action=edit&id=<?=$data['id'];?>&redirect=<?=WT_validate_ipc_link (get_redirection (true, true));?>');">Редактировать</button><?php } ?>
+  </div>
+<?php
+  }
+
+  formc ();
+?>

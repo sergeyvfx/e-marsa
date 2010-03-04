@@ -1,0 +1,8 @@
+storage
+resources
+articles
+inc/logick/tester/config/ipc.php
+inc/logick/tester/config/wt.php
+inc/common/config.php
+devel
+*~

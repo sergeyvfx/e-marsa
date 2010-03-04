@@ -1,0 +1,265 @@
+<?php
+  global $CORE, $act, $id, $redirect;
+
+  $WT_contest_id = $_SESSION['WT_contest_id'];
+  $lib = targ ('lib');
+
+  $full = content_url_get_full ();
+  $arr = $lib->GetProblemsAtContest ($WT_contest_id);
+  $n = count ($arr);
+
+  $CORE->AddStyle ('tagcloud');
+
+  if ($n == 0) {
+    println ('<span class="contentSub2">Нет задач для просмотра</span>');
+  } else {
+    $c = WT_contest_by_id ($WT_contest_id);
+    $j = $lib->IsContestJudge ();
+    if ($c['settings']['archive']!='' && (!$c['settings']['archive.blocked'] || $j)) {
+      if ($j) {
+        file_allow_encrypted ($c['settings']['archive']);
+      }
+      $lib->AppendQuickLink ('Архив с задачами', files_get_encrypted_link ($c['settings']['archive']));
+    }
+?>
+<script language="JavaScript" type="text/javascript">
+
+var last_desc_id=<?=(($id!='' && $id>0)?($id):('-1'));?>;
+
+function show_desc (id) {
+  if (last_desc_id >= 0) {
+    var last = getElementById ('desc_'+last_desc_id);
+    var name = last.innerHTML;
+    last.innerHTML = '<a id="desc_lbl_'+last_desc_id+'" href="JavaScript:show_desc (' + last_desc_id + ');">'+name+'</a>';
+    last.className = '';
+  }
+
+  var cur = getElementById ('desc_lbl_' + id), cparent = cur.parentNode;
+  var name = cur.innerHTML;
+
+  cparent.className = 'arr';
+  cparent.innerHTML = name;
+
+  last_desc_id = id;
+
+  setForceURL (document_root+'/tester/?page=problems&act=view&id='+id<?=(($redirect!='')?('+\'&redirect='.urlencode ($redirect).'\''):(''));?>);
+
+  CONTENT_open (getElementById ('problemDescBrowser'), '/tester/?ipc=get_problem_desc&cid=<?=$WT_contest_id;?>&id='+id+
+    '&backlink=<?=$redirect;?>');
+}
+
+</script>
+
+<?php
+  if ($lib->GetAllowed ('PROBLEMS.EDIT')) {
+?>
+<script language="JavaScript" type="text/javascript">
+  function on_tag_add_click(sender) {
+    var inpform = getElementById ('tag_inp_form');
+    var tag_name = elementByIdInTree (inpform, 'tag_name');
+    inpform.style.display = 'block';
+    tag_name.value = '';
+    sender.style.display = 'none';
+    tag_name.focus ();
+  }
+
+  function add_tag_callback(response, tag, problem_id) {
+    if (response != '+OK') {
+      alert ('Произошла ошибка добавления метки к задаче');
+    } else {
+      var tags_div = getElementById ('problem_tags');
+
+      var newRow = document.createElement ('DIV');
+      newRow.innerHTML = '<span>' + htmlspecialchars (tag) + '</span>' +
+        '<img src="' + document_root + '/pics/minus_s.gif" onclick="remove_tag(this, ' + problem_id + ')">';
+      tags_div.appendChild (newRow);
+
+      var inpform = getElementById ('tag_inp_form');
+      var tag_name = elementByIdInTree (inpform, 'tag_name');
+      tag_name.value = '';
+
+      tagcloud_remove_tag ('ProblemTags', tag);
+      tags_resort ();
+    }
+  }
+
+  function add_specified_tag(tag, problem_id) {
+    IPC_Send_Command ('/tester/', 'ipc=cmd_problem_add_tag&id=' + problem_id +
+      '&tag=' + escapeURLVal (tag), function (response) { add_tag_callback (response, tag, problem_id); });
+  }
+
+  function do_add_tag(problem_id) {
+    var inpform = getElementById ('tag_inp_form');
+    var tag_name = elementByIdInTree (inpform, 'tag_name');
+    var trimmed = qtrim (tag_name.value);
+    if (trimmed == '') {
+      return;
+    }
+
+    add_specified_tag (trimmed, problem_id);
+  }
+
+  function on_tagname_keypress(event, problem_id) {
+    var evt = event || window.event;
+    if (evt && evt.keyCode == 13) {
+      do_add_tag (problem_id);
+    }
+  }
+
+  function remove_tag_callback(sender, problem_id, tag, response) {
+    if (response != '+OK') {
+      alert ('Произошла ошибка удаления метки');
+    } else {
+      var row = sender.parentNode;
+      row.parentNode.removeChild (row);
+      tagcloud_add_tag ('ProblemTags', tag);
+    }
+  }
+
+  function remove_tag(sender, problem_id) {
+    if (true || confirm ('Удалить выбранную метку?')) {
+      var tag = htmlspecialchars_decode (sender.parentNode.childNodes[0].innerHTML);
+      IPC_Send_Command ('/tester/', 'ipc=cmd_problem_rm_tag&id=' + problem_id +
+                        '&tag=' + escapeURLVal (tag),
+                        function (response) {
+                          remove_tag_callback (sender, problem_id,
+                                               tag, response);
+                        }
+                        );
+    }
+  }
+
+  function on_tagcloud_selected(tag, problem_id) {
+    add_specified_tag (tag, problem_id);
+  }
+
+  function tags_resort() {
+    var tags_div = getElementById ('problem_tags');
+    var tags = [];
+
+    /* Gather tags and remove separators */
+    var i = 0, n = tags_div.childNodes.length;
+    while (i < n) {
+      var c = tags_div.childNodes[i];
+
+      if (c.nodeType == 3) {
+        c.parentNode.removeChild (c);
+        --i;
+        --n;
+      }
+
+      if (c.tagName && c.tagName.toLowerCase () == 'div') {
+        tags.push (c);
+        c.parentNode.removeChild (c);
+        --i;
+        --n;
+      }
+
+      ++i;
+    }
+
+    /* Sort tags */
+    tags.sort (function (_a, _b) {
+        a = _a.childNodes[0];
+        while (a && !a.tagName) {
+          a = a.nextSibling;
+        }
+
+        b = _b.childNodes[0];
+        while (b && !b.tagName) {
+          b = b.nextSibling;
+        }
+
+        if (a.innerHTML < b.innerHTML) return -1;
+        if (a.innerHTML > b.innerHTML) return 1;
+        return 0;
+      });
+
+    /* Add sorted tags to DOM tree */
+    for (var i = 0, n = tags.length; i < n; ++i) {
+      tags_div.appendChild (tags[i]);
+    }
+
+  }
+</script>
+
+<?php
+  }
+?>
+
+
+<?php
+    function draw_list ($title, $id, $lib, $arr, $dis_data, $dis, $break=false) {
+      global $id;
+      $n = count ($arr);
+
+      $print = false;
+      for ($i = 0; $i < $n; $i++) {
+        if (isset ($dis_data[$arr[$i]['id']]) != $dis) {
+          continue;
+        }
+        $print = true;
+      }
+
+      if (!$print) {
+        return false;
+      }
+
+      if ($break) {
+        print '<br>';
+      }
+
+      println (stencil_contentso ('title='.$title.';id='.$id));
+      println ('<table width="100%">');
+
+      for ($i = 0; $i < $n; $i++) {
+        if (isset ($dis_data[$arr[$i]['id']]) != $dis) {
+          continue;
+        }
+
+        $active = $id == $arr[$i]['id'];
+        $style = '';
+
+        if ($lib->Problem_Accepted ($arr[$i]['id'])) {
+          $style = 'background: #efe; border: 1px #777 dotted; ';
+        } else if ($lib->Problem_Tried ($arr[$i]['id'])) {
+          $style = 'background: #fee; border: 1px #777 dotted; ';
+        }
+
+        $style .= 'padding: 1px 4px;';
+        println ('<tr><td'.(($style!='')?(' style="'.$style.'"'):('')).'>'.core_alpha ($arr[$i]['letter']).
+          '. <span id="desc_'.$arr[$i]['id'].'" '.(($active)?(' class="arr"'):('')).'>'.((!$active)?('<a id="desc_lbl_'.$arr[$i]['id'].'" href="JavaScript:show_desc('.$arr[$i]['id'].');">'):('')).$arr[$i]['name'].
+          ((!$active)?('</a>'):('')).'</span></td></tr>');
+      }
+      println ('</table>');
+
+      println (stencil_contentsc ());
+      return true;
+    }
+
+    $dis = array ();
+    $q = db_select ('tester_disabled_problems', array ('problem_id'), '`contest_id`='.$WT_contest_id);
+    while ($r = db_row ($q)) {
+      $dis[$r['problem_id']] = true;
+    }
+
+    println ('<table width="100%"><tr valign="top"><td width="220">');
+    $break = false;
+    if (draw_list ('Доступные задачи', 'problems_contents', $lib, $arr, $dis, false)) {
+      $break = true;
+    }
+    draw_list ('Заблокированные задачи', 'disabled_problems_contents', $lib, $arr, $dis, true, $break);
+    println ('</td><td><div id="problemDescBrowser" class="AJAXContainer">');
+    if ($act == 'view') {
+      if ($lib->Problem_Accessible ($id)) {
+        println ($lib->Problem_DescriptionForm ($id));
+      } else {
+        println ('<span class="contentSub">Извините, но эта задача недоступна для Вас</span>');
+      }
+    } else {
+      $tpl = manage_template_by_name ('Олимпиады / Informatics / Список задач');
+      println ($tpl->GetText ());
+    }
+    println ('</div></td></tr></table>');
+  }
+?>
