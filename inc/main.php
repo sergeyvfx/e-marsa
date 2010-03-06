@@ -102,17 +102,17 @@
           $this->ActionHandler ();
 
           // Creating page
-          $this->PAGE->AddStyle ('content');
-          $this->PAGE->AddStyle ('pages');
           $this->PAGE->AddScript ('language=JavaScript;type=text/javascript', "\n".tpl ('common/globals', array (), false));
           $this->PAGE->AddScriptFile ('core.js');
           $this->PAGE->AddMeta ('http-equiv=content-language;content='.config_get ('content-language'));
+          $this->PAGE->AddMeta ('http-equiv=Content-Type;content=text/html\; charset\='.config_get ('character-set'));
           $this->PAGE->AddMeta ('name=url;content='.config_get ('meta-url'));
           $this->PAGE->AddMeta ('name=keywords;content='.config_get ('meta-keywords'));
           $this->PAGE->AddMeta ('name=description;content='.config_get ('meta-description'));
-          $this->PAGE->AddMeta ('http-equiv=Content-Type;content=text/html\; charset\='.config_get ('character-set'));
           $this->PAGE->AddMeta ('name=robots;content=all');
           $this->PAGE->SetIcon (config_get ('document-root').'/pics/favicon.ico');
+          $this->PAGE->AddStyle ('content');
+          $this->PAGE->AddStyle ('pages');
           add_body_handler ('onmousemove', 'core_StoreMousePos', array ('event'));
 
           if (browser_engine () == 'OPERA') {

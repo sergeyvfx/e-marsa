@@ -113,14 +113,14 @@
                                      '</title>');
 
         // Styles
+        $result .= $this->MetasSource ();
+
         $p = config_get ('document-root').'/styles/';
         foreach ($this->CSStyles as $s) {
           $result = swriteln ($result, $this->FromTemplate ('link',
               array ('rel'=>'stylesheet', 'type'=>"text/css",
                      'href'=>$p.$s.'.css')));
         }
-
-        $result .= $this->MetasSource ();
 
         // favicon
         $ico = $this->GetIcon ();
