@@ -1,0 +1,12 @@
+#content  UL.pricecat {
+  padding: 0;
+}
+
+#content  LI.pricecat {
+  font-weight: bold;
+  list-style: none;
+}
+
+#content  UL.pricesubcat {
+  margin: 4px 0;
+}
