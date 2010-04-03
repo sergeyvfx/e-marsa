@@ -648,10 +648,10 @@
                                     '&act=delete&pid='.$r['id'], 'Удалить',
                                     'Удалить этот подкаталог и все вложенные?');
 
-          println ('<table class="list" width="100%" style="margin: 2px 0 2px '.
-                   ($interion*24).'px;"><tr class="h"><th class="first">'.
+          println ('<div style="margin: 2px 0 2px '.($interion*24).'px;">'.
+                   '<table class="list" width="100%"><tr class="h"><th class="first">'.
                    $r['name'].'</th><th width="80" style="text-align: right;" '.
-                   'class="last">'.$actions.'</th></tr></table>');
+                   'class="last">'.$actions.'</th></tr></table></div>');
 
           $interion++;
         }

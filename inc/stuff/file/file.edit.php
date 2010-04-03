@@ -1,9 +1,7 @@
 <?php
-  global $_FILES, $storage, $size, $field, $formname, $value;
+  global $_FILES, $storage, $size, $field, $formname, $value, $user_id;
   include '../../../globals.php';
   include $DOCUMENT_ROOT.'/inc/include.php';
-
-  $user_id = $_SESSION['user_id'];
 
   db_connect ();
 ?>

@@ -10,3 +10,29 @@
 #content  UL.pricesubcat {
   margin: 4px 0;
 }
+
+#content TABLE.priceArticle {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#content TABLE.priceArticle TD.photo {
+  width: 60%;
+}
+
+#content TABLE.priceArticle TD.photo IMG {
+  max-width: 480px;
+  max-height: 480px;
+}
+
+#content TABLE.priceArticle DIV.actsPub {
+  padding: 6px;
+  border: 1px #aaa solid;
+  margin: 8px;
+}
+
+#content TABLE.priceArticle DIV.actsPub DIV.cost {
+  font-size: 12pt;
+  text-align: center;
+}

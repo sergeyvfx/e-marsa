@@ -10,9 +10,7 @@
    * See the file COPYING.
    */
 
-  global $_FILES, $storage, $size, $hlimit, $vlimit, $field, $formname, $value;
-
-  $user_id = $_SESSION['user_id'];
+  global $_FILES, $storage, $size, $hlimit, $vlimit, $field, $formname, $value, $user_id;
 
   include '../../../globals.php';
   include $DOCUMENT_ROOT.'/inc/include.php';
