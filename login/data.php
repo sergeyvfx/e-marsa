@@ -39,11 +39,11 @@
           <td>
             <table width="100%" style="margin-left: 64px;">
               <tr>
-                <td width="60">Ваш логин:</td>
+                <td width="80">Ваш логин:</td>
                 <td><input type="text" class="txt" value="" name="login" id="login" size="40"></td>
               </tr>
               <tr>
-                <td width="60" style="padding-top: 4px;">Пароль:</td>
+                <td width="80" style="padding-top: 4px;">Пароль:</td>
                 <td style="padding-top: 4px;"><input type="password" class="passwd" name="passwd" size="40"></td>
               </tr>
             </table>
