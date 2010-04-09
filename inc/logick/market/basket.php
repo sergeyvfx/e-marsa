@@ -135,6 +135,10 @@
           $this->Drop ($items[$i]);
         }
       }
+
+      function isEmpty () {
+        return count ($this->items) == 0;
+      }
     }
 
   }

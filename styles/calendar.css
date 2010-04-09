@@ -11,7 +11,7 @@
 #content #calendar #days td.last { border-right: 1px #aaa solid; }
 #content #calendar #days td { background-color: #f0f0f0; text-align: center;  }
 #content #calendar #days td.h { background-color: #fcc; }
-#content #calendar #days td.h a { font-size: 8pt; }
+#content #calendar #days td.h a { font-size: 10pt; }
 #content #calendar #days td.d { color: #999; }
 #content #calendar #days a, #content #calendar #days a:link, #content #calendar #days  a:visited { color: #303030; display: block; }
 #content #calendar #days a:hover { text-decoration: none; color: #00007f; }

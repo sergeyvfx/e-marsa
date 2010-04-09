@@ -1,6 +1,6 @@
 body {
   margin: 0; padding: 2px 4px 4px 4px;
-  font-family: "tahoma", "arial", "verdana"; font-size: 8pt;
+  font-family: "tahoma", "arial", "verdana"; font-size: 10pt;
   background: #f7f7f7;
 }
 
@@ -32,7 +32,7 @@ body {
 #content #nav .body ul.sub {  }
 
 #content .pointer {cursor: pointer;}
-#content .cntsmall, #content .cntsmall a:visited, #content .cntsmall a:link  { font-size: 7pt; }
+#content .cntsmall, #content .cntsmall a:visited, #content .cntsmall a:link  { font-size: 8pt; }
 
 /* Default formation */
 #content p { margin: 4px 0; text-align: justify; text-indent: 24px; }
@@ -40,19 +40,19 @@ body {
 #content img.sep   { width: 1px; height: 1px; }
 #content img.sep16 { width: 16px; height: 1px; }
 
-#content table { border-collapse: collapse; font-size: 8pt; }
+#content table { border-collapse: collapse; font-size: 10pt; }
 #content table.spacing td { padding: 2px; }
-#content table.small      { font-size: 7pt; }
+#content table.small      { font-size: 8pt; }
 #content table tr td, table tr th { margin: 0; padding: 0;}
 
 #content ul    { margin: 0; padding: 0 0 0 40px; }
 #content ul li { list-style: url('../pics/ul_marker.gif'); margin: 0; padding: 0; }
 
-#content a, #content a:visited, #content a:link { font-family: "tahoma", "arial", "verdana"; font-size: 8pt; text-decoration: underline; color: #0000cf; }
+#content a, #content a:visited, #content a:link { font-family: "tahoma", "arial", "verdana"; font-size: 10pt; text-decoration: underline; color: #0000cf; }
 #content a:hover { color: #00f; text-decoration: none; }
 #content a img   { border: 0; }
 #content a.act   { color: #00007f; font-weight: bold; }
-#content a.small { font-size: 7pt; }
+#content a.small { font-size: 8pt; }
 
 #content h1 { font-family: "tahoma", "arial", "verdana"; font-size: 14pt; margin: 14px 0 5px 5px; }
 #content h2 { font-family: "tahoma", "arial", "verdana"; font-size: 12pt; font-weight: bold; margin: 12px 0 4px 5px; }
@@ -62,28 +62,28 @@ body {
 #content h2 a, #content h2 a:visited, #content h2 a:link  { font-size: 12pt; }
 #content h3 a, #content h3 a:visited, #content h3 a:link  { font-size: 10pt; }
 
-#content textarea       { font-family: "tahoma", "arial", "verdana"; font-size: 8pt; border: 1px #aaa solid; padding: 2px; color: #000; }
+#content textarea       { font-family: "tahoma", "arial", "verdana"; font-size: 10pt; border: 1px #aaa solid; padding: 2px; color: #000; }
 #content textarea.block { display: block; width: 100%; }
 
-#content small, #content .shade table { font-family: "tahoma", "arial", "verdana"; font-size: 7pt; }
+#content small, #content .shade table { font-family: "tahoma", "arial", "verdana"; font-size: 8pt; }
 
 #content input.cb   { margin: 3px 3px 0 3px; padding: 0;  }
 #content input.radio { position: relative; top: 2px;  cursor: pointer; }
 
 #content input.txt, input.file, #content input.passwd {
   border: 1px #aaa solid; padding: 1px 2px;
-  font-family: "tahoma", "arial", "verdana"; font-size: 8pt;
+  font-family: "tahoma", "arial", "verdana"; font-size: 10pt;
   color: #000;
   background: #fff;
 }
 
-#content select       { border: 1px #aaa solid; font-family:  "tahoma", "arial", "verdana"; font-size: 8pt; color: #000; }
-#content select.small { font-size: 7pt; }
+#content select       { border: 1px #aaa solid; font-family:  "tahoma", "arial", "verdana"; font-size: 10pt; color: #000; }
+#content select.small { font-size: 8pt; }
 
 #content form {margin: 0; padding: 0;}
 
-#content button, #content submit.btn { border-width: 1px; font-size: 8pt; padding: 2px 0; color: #000; }
-#content button.block { font-size: 8pt; padding: 2px 0; width: 100%; border-width: 1px; }
+#content button, #content submit.btn { border-width: 1px; font-size: 10pt; padding: 2px 0; color: #000; }
+#content button.block { font-size: 10pt; padding: 2px 0; width: 100%; border-width: 1px; }
 #content button.alert       { background-color: #c91717; color: #fff; border-color: #7f0000; }
 #content button.alert:hover { background-color: #f00;  }
 
@@ -221,7 +221,7 @@ body {
 
 #content button       { border: 1px #aaa solid; background: #fff; cursor: pointer; vertical-align: middle; text-align: center; }
 #content button:hover { background: #eee; }
-#content button.small { font-size: 8pt; height: 18px; padding: 0; marin: 0; }
+#content button.small { font-size: 10pt; height: 18px; padding: 0; marin: 0; }
 
 #content .blockButton { text-align: center; }
 #content .blockButton a { display: block; background-color: #f0f0f0; padding: 2px 0; border: 1px #aaa solid; }
@@ -233,7 +233,7 @@ body {
 #content .btnFloat a:visited { color: #303030; }
 #content .btnSeparator { background: url(../pics/separator.gif) 0px 4px no-repeat; float: left; display: inline; width: 2px; height: 16px; padding: 0 2px; }
 
-#content .submitBtn { width: 150px; font-size: 8pt; padding: 2px 0; }
+#content .submitBtn { width: 150px; font-size: 10pt; padding: 2px 0; }
 #content button.submitBtn { margin: 0 2px; }
 
 #content .imgbutton { border: 1px #777 solid; }
