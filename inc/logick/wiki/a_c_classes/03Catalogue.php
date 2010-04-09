@@ -788,7 +788,7 @@
                          $newIDS):('')).'">'.$title.'</a>';
           }
 
-          $newIDS .= (($mewIDS!='')?(','):('')).$ids[$i];
+          $newIDS .= (($newIDS!='')?(','):('')).$arr[$i];
 
           print $title;
         }
