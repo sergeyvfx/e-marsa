@@ -42,6 +42,89 @@
         $this->CheckTables ();
         $this->BASKET = new CMarketBasket ();
       }
+
+      function GetVendorsJSON ($catid) {
+        $vendors = $this->GetVendors ($catid);
+        $result = '';
+
+        for ($i = 0, $n = count ($vendors); $i < $n; ++$i) {
+          if ($result != '') {
+            $result .= ', ';
+          }
+          $result .= '"' . addslashes ($vendors[$i]) . '"';
+        }
+
+        return "[$result]";
+      }
+
+      function GetVendors ($catid) {
+        $pIFACE = content_lookup (config_get ('document-root').'/price')->GetData ();
+        $catdata = $pIFACE->GetCatalogueData (1, $catid);
+        $result = array ();
+        $cache = array ();
+
+        for ($j = 0, $m = count ($catdata); $j < $m; ++$j) {
+          $data = $pIFACE->GetCatalogueData (2, $catdata[$j]['uid']);
+          for ($i = 0, $n = count ($data); $i < $n; ++$i) {
+            $it = $data[$i];
+
+            if ($cache[strtolower ($it['vendor'])]) {
+              continue;
+            }
+
+            $cache[strtolower ($it['vendor'])] = true;
+
+
+            $result[] = $it['vendor'];
+          }
+        }
+
+        return $result;
+      }
+
+      function SearchData ($catid, $vendor, $string) {
+        $pIFACE = content_lookup (config_get ('document-root').'/price')->GetData ();
+
+        $words = explode (' ', preg_replace ('/\s+/', ' ', strtolower ($string)));
+
+        $result = array ();
+        if (!isNumber ($catid)) {
+          return $result;
+        }
+
+        $subcats = $pIFACE->GetCatalogueData (1, $catid);
+        $vendor = strtolower (trim ($vendor));
+
+        for ($j = 0, $m = count ($subcats); $j < $m; ++$j) {
+          $data = $pIFACE->GetCatalogueData (2, $subcats[$j]['uid']);
+          for ($i = 0, $n = count ($data); $i < $n; ++$i) {
+            $it = $data[$i];
+
+            if ($vendor != '' && strtolower ($it['vendor']) != $vendor) {
+              continue;
+            }
+
+            $found = true;
+            $name = strtolower ($it['name']);
+            for ($k = 0, $l = count ($words); $k < $l; ++$k) {
+              if (trim ($words[$k]) == '') {
+                continue;
+              }
+
+              if (strpos ($name, $words[$k]) == false) {
+                $found = false;
+                break;
+              }
+            }
+
+            if ($found) {
+              $result[] = $it;
+            }
+          }
+        }
+
+        return $result;
+      }
     }
 
     global $MARKET;
